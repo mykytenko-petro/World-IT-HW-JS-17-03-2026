@@ -75,36 +75,36 @@ function revealContent(button) {
  * 3.якщо вони не збіглеся виклекаемо reset
  * 4.якщо це був леше перший клік то ми просто відкриваемо першу кнопку
  */
+
 function pick(button) {
     const content = button.value.split(" ")[0];
     const buttonIndex = button.value.split(" ")[1];
     
     if (!isPlaying) return;
-
     if (lastPickedIndex === buttonIndex) {
+        lastPickedIndex = buttonIndex;
+        
         return;
     }
     
     revealContent(button);
 
-    if (lastPickedContent === "none") {
-        lastPickedContent = content; 
-        lastPickedIndex = buttonIndex; 
+    if (content !== lastPickedContent && lastPickedContent !== "none") {
+        if (contentArray.filter((entry) => entry === lastPickedContent).length !== 1) {
+            reset();
+            return;
+        }
+    }
+    else if (content === lastPickedContent) {
+        const buttonArray = rootDiv.querySelectorAll("button");
+        for (let buttonIndex = 0; buttonIndex < buttonArray.length; buttonIndex++) {
+            if (buttonArray[buttonIndex].value.split(" ")[0] === lastPickedContent)
+                revealContent(buttonArray[buttonIndex]);
+        }
+        lastPickedContent = "none";
         return;
     }
 
-    if (content !== lastPickedContent) {
-        reset(); 
-    } 
-    else {
-        const buttonArray = rootDiv.querySelectorAll("button");
-        buttonArray.forEach(btn => {
-            if (btn.value.split(" ")[0] === content) {
-                revealContent(btn); 
-            }
-        });
-
-        lastPickedContent = "none";
-        lastPickedIndex = -1;
-    }
+    lastPickedContent = content;
+    lastPickedIndex = buttonIndex;
 }
