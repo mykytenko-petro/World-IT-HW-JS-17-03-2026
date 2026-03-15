@@ -18,8 +18,8 @@ body {
 }
 
 .root {
-    height: 489px;
     width: 453px;
+    height: 489px;
 
     box-sizing: border-box;
     padding: 45px;
